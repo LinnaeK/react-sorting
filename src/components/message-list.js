@@ -1,6 +1,12 @@
 import React from 'react'
+import jss from 'jss'
+import preset from 'jss-preset-default'
+import Grid from './Grid'
+
 import Button from '@material-ui/core/Button'
 import Api from '../api'
+
+jss.setup(preset())
 
 class MessageList extends React.PureComponent {
   constructor(...args) {
@@ -47,12 +53,17 @@ class MessageList extends React.PureComponent {
     const isApiStarted = this.api.isStarted()
     return (
       <div>
+        <h4>Help.com Coding Challenge</h4>
+        <div id="snackbar"></div>
+        <hr/>
         <Button
           variant="contained"
           onClick={this.handleClick}
         >
           {isApiStarted ? 'Stop Messages' : 'Start Messages'}
         </Button>
+        <Button >Clear</Button>
+        <Grid messages={this.state.messages}/>
       </div>
     )
   }
