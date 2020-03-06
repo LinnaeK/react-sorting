@@ -32,13 +32,32 @@ export default function CustomizedSnackbars(props) {
     filterMsgs()
   })
 
+  let buttons = []
+
   function filterMsgs(){
     let errorMsgs = props.messages.filter(msg => msg.priority === 1)
     let warningMsgs = props.messages.filter(msg => msg.priority === 2)
     let infoMsgs = props.messages.filter(msg => msg.priority === 3)
+    errorMsgs = errorMsgs.map((msg)=>{
+      return <Alert key={msg.id}>{msg.message}</Alert>
+    })
+    warningMsgs = warningMsgs.map((msg)=>{
+      return <Alert key={msg.id}>{msg.message}</Alert>
+    })
+    infoMsgs = infoMsgs.map((msg)=>{
+      return <Alert key={msg.id}>{msg.message}</Alert>
+    })
     setErrorMessages(errorMsgs)
     setWarningMessages(warningMsgs)
     setInfoMessages(infoMsgs)
+    }
+  
+
+  function displayMsgs(){
+    let display = errorMessages.map((msg)=>{
+      return <Alert key={msg.id}>{msg.message}</Alert>
+    })
+    return display
   }
     
 
@@ -57,12 +76,7 @@ export default function CustomizedSnackbars(props) {
           This is a success message!
         </Alert>
       </Snackbar>
-      <div className={classes.root}>
-      <Alert severity="error">This is an error message!</Alert>
-      </div>
-      <Alert severity="warning">This is a warning message!</Alert>
-      <Alert severity="info">This is an information message!</Alert>
-      <Alert severity="success">This is a success message!</Alert>
+      {errorMessages}
       </Box>
       <Box
         boxShadow={0}
@@ -76,10 +90,7 @@ export default function CustomizedSnackbars(props) {
           This is a success message!
         </Alert>
       </Snackbar>
-      <Alert severity="error">This is an error message!</Alert>
-      <Alert severity="warning">This is a warning message!</Alert>
-      <Alert severity="info">This is an information message!</Alert>
-      <Alert severity="success">This is a success message!</Alert>
+      {warningMessages}
       </Box>
       <Box
         boxShadow={0}
@@ -93,10 +104,7 @@ export default function CustomizedSnackbars(props) {
           This is a success message!
         </Alert>
       </Snackbar>
-      <Alert severity="error">This is an error message!</Alert>
-      <Alert severity="warning">This is a warning message!</Alert>
-      <Alert severity="info">This is an information message!</Alert>
-      <Alert severity="success">This is a success message!</Alert>
+      {infoMessages}
       </Box>
       </Grid>
     </div>
