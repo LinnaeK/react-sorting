@@ -23,45 +23,58 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const action = (
-  <Button color="black" size="small">
-    Clear
-  </Button>
-)
-
 export default function CustomizedSnackbars(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [errorMessages, setErrorMessages] = React.useState([])
   const [warningMessages, setWarningMessages] = React.useState([])
   const [infoMessages, setInfoMessages] = React.useState([])
-
-  useEffect(()=>{
-    filterMsgs()
-  })
-
-  function filterMsgs(){
-    let errorMsgs = props.messages.filter(msg => msg.priority === 1)
-    let warningMsgs = props.messages.filter(msg => msg.priority === 2)
-    let infoMsgs = props.messages.filter(msg => msg.priority === 3)
-    errorMsgs = errorMsgs.map((msg)=>{
-      return <SnackbarContent key={msg.id} style={{ backgroundColor:"#F56236"}} message={msg.message} action={action} />
+  const [me, setMe] = React.useState('I have not been clicked')
   
-    })
-    warningMsgs = warningMsgs.map((msg)=>{
-      return <SnackbarContent key={msg.id} style={{ backgroundColor:"#FCE788"}} message={msg.message} action={action} />
+
+    const action = (
+      <Button size="small" onClick={(e) => handleClearClick(e)}>
+        Clear
+      </Button>
+    )
+
+    const filterMsgs = () => {
+      let errorMsgs = props.messages.filter(msg => msg.priority === 1).reverse()
+      let warningMsgs = props.messages.filter(msg => msg.priority === 2).reverse()
+      let infoMsgs = props.messages.filter(msg => msg.priority === 3).reverse()
+      errorMsgs = errorMsgs.map((msg)=>{
+        return <SnackbarContent key={msg.id} style={{ backgroundColor:"#F56236"}} message={msg.message} action={action} />
+    
+      })
+      warningMsgs = warningMsgs.map((msg)=>{
+        return <SnackbarContent key={msg.id} style={{ backgroundColor:"#FCE788"}} message={msg.message} action={action} />
+    
+      })
+      infoMsgs = infoMsgs.map((msg)=>{
+        return <SnackbarContent action={action} key={msg.id} style={{ backgroundColor:"#88FCA3"}} message={msg.message} />
+      })
+      setErrorMessages(errorMsgs)
+      setWarningMessages(warningMsgs)
+      setInfoMessages(infoMsgs)
+      }
+
+      useEffect(()=>{
+        filterMsgs()}, [props.messages])
+
+
+  function handleClearClick(event) {
+    event.preventDefault()
+    console.log(event.target)
+    alert("I have been clicked!!")
+    setMe(event.target)
+  }
+
   
-    })
-    infoMsgs = infoMsgs.map((msg)=>{
-      return <SnackbarContent key={msg.id} style={{ backgroundColor:"#88FCA3"}} message={msg.message} action={action} />
-    })
-    setErrorMessages(errorMsgs)
-    setWarningMessages(warningMsgs)
-    setInfoMessages(infoMsgs)
-    }
+
 
   return (
     <div className={classes.root}>
+      {me}
       <Grid container>
       <Box
         className={classes.root}

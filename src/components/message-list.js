@@ -2,7 +2,7 @@ import React from 'react'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import Grid from './Grid'
-
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Button from '@material-ui/core/Button'
 import Api from '../api'
 
@@ -13,6 +13,7 @@ class MessageList extends React.PureComponent {
     super(...args)
     this.state = {
       messages: [],
+      notification: ''
     }
   }
 
@@ -35,8 +36,13 @@ class MessageList extends React.PureComponent {
       ],
     }, () => {
       // Included to support initial direction. Please remove upon completion
-      console.log(messages)
+      // console.log(messages)
     })
+    if(message.priority===1){
+      this.setState({
+        notification: <SnackbarContent style={{ backgroundColor:"#F56236"}} key={message.id} message={message.message}/>
+      })
+    }
   }
 
   handleClick = () => {
@@ -49,12 +55,20 @@ class MessageList extends React.PureComponent {
     this.forceUpdate()
   }
 
+  handleClearClick = (event) => {
+    event.preventDefault()
+    // console.log(event)
+    this.setState({
+      notification: <h1>I have been Clicked</h1>
+    })
+  }
+
   render() {
     const isApiStarted = this.api.isStarted()
     return (
       <div>
         <h4>Help.com Coding Challenge</h4>
-        <div id="snackbar"></div>
+        <div>{this.state.notification}</div>
         <hr/>
         <Button
           variant="contained"
@@ -62,8 +76,11 @@ class MessageList extends React.PureComponent {
         >
           {isApiStarted ? 'Stop Messages' : 'Start Messages'}
         </Button>
-        <Button >Clear</Button>
-        <Grid messages={this.state.messages}/>
+        <Button onClick={this.handleClearClick}>Clear</Button>
+        <Grid 
+        messages={this.state.messages}
+        handleClearClick={this.handleClearClick}
+        />
       </div>
     )
   }
