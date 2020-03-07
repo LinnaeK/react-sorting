@@ -40,7 +40,7 @@ class MessageList extends React.PureComponent {
         this.setState({
           notification: <SnackbarContent style={{ backgroundColor:"#F56236"}} key={message.id} message={message.message} action={<Button onClick={()=>{this.handleClearOneClick(message.id)}}>X</Button>}/>
         })
-        setTimeout(()=>{this.setState({notification: ''})}, 10000)
+        setTimeout(()=>{this.setState({notification: ''})}, 2000)
       }
     })
   }
@@ -57,9 +57,9 @@ class MessageList extends React.PureComponent {
   }
 
   handleClearOneClick=(msgId)=>{
-    console.log(msgId)
     this.setState((state)=>({
-      messages: state.messages.filter(msg => {if(msg.id!==msgId) return msg})
+      messages: state.messages.filter(msg => {if(msg.id!==msgId) return msg}),
+      notification: state.notification.key === msgId ? '' : state.notification
     }))
   }
 
