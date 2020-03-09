@@ -1,12 +1,40 @@
-import React from 'react'
-import jss from 'jss'
-import preset from 'jss-preset-default'
+import React, {setState} from 'react'
+import { withStyles } from "@material-ui/core/styles";
 import Grid from './Grid'
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import HeaderSnackbar from './HeaderSnackbar'
 import Button from '@material-ui/core/Button'
 import Api from '../api'
 
-jss.setup(preset())
+const styles = theme => ({
+  root: {
+    'font-family': "'Montserrat', sans-serif",
+    'color': '#000000', 
+  },
+  title: {
+    'font-weight': 'bold'
+  },
+  button: {
+    width: '30vw',
+    position: 'absolute',
+    left: '0',
+    right: '0',
+    margin: 'auto',
+    'margin-top': '-17vh'
+    
+  },
+  heading: {
+    position: 'relative',
+    padding: '0 3vw'
+  },
+  controlButtons: {
+    display: 'flex',
+    'justify-content': 'center'
+  },
+  controlButton: {
+    backgroundColor:'#03E0B7',
+    margin: '5px'
+  }
+})
 
 class MessageList extends React.PureComponent {
   constructor(...args) {
@@ -16,18 +44,18 @@ class MessageList extends React.PureComponent {
       notification: ''
     }
   }
-
+    
   api = new Api({
     messageCallback: (message) => {
       this.messageCallback(message)
     },
   })
 
-  componentDidMount() {
+  componentDidMount(){
     this.api.start()
   }
 
-  messageCallback(message) {
+  messageCallback(message){
     const { messages } = this.state
     this.setState({
       messages: [
@@ -36,18 +64,19 @@ class MessageList extends React.PureComponent {
       ],
     }, () => { 
       if(message.priority===1){
-        let snackbarMsg = 
-        this.setState({
-          notification: <SnackbarContent style={{ backgroundColor:"#F56236"}} key={message.id} message={message.message} action={<Button onClick={()=>{this.handleClearOneClick(message.id)}}>X</Button>}/>
-        })
-        setTimeout(()=>{this.setState({notification: ''})}, 2000)
+        this.setState({notification:
+          <HeaderSnackbar 
+            message={message} 
+            handleClearOneClick={this.handleClearOneClick}
+          />
+            })
+        setTimeout(()=>{this.setState({notification:''})}, 2000)
       }
     })
   }
 
   handleClick = () => {
-    const isApiStarted = this.api.isStarted()
-    console.log('inClick', isApiStarted)
+    const isApiStarted = this.api.isStarted() 
     if (isApiStarted) {
       this.api.stop()
     } else {
@@ -56,33 +85,47 @@ class MessageList extends React.PureComponent {
     this.forceUpdate()
   }
 
-  handleClearOneClick=(msgId)=>{
-    this.setState((state)=>({
-      messages: state.messages.filter(msg => {if(msg.id!==msgId) return msg}),
-      notification: state.notification.key === msgId ? '' : state.notification
-    }))
+  handleClearOneClick=(msgId)=>{   
+      this.setState({
+        messages: this.state.messages.filter(msg => {if(msg.id!==msgId) return msg}),
+        notification: this.state.notification.key ? this.state.notification.key === msgId ? '' : this.notification : ''
+      })
   }
 
   handleClearAllClick=()=>{
-    console.log('clear All Clicked')
-    this.setState({messages:[], notification: ''})
+    this.setState({
+      messages: [],
+      notification: ''
+    })
   }
 
   render() {
     const isApiStarted = this.api.isStarted()
-    console.log('in render', isApiStarted)
+    let {classes} = this.props
     return (
-      <div>
-        <h4>Help.com Coding Challenge</h4>
-        <div>{this.state.notification}</div>
+      <div className={classes.root}>
+        <div className={classes.heading}>
+        <h3 className={classes.title}>Help.com Coding Challenge</h3>
+        <div className={classes.button}>{this.state.notification}</div>
+        </div>
         <hr/>
+        <div className={classes.controlButtons}>
         <Button
           variant="contained"
           onClick={this.handleClick}
-        >
-          {isApiStarted ? 'Stop Messages' : 'Start Messages'}
+          size={'small'}
+          className={classes.controlButton}
+          >
+          {isApiStarted ? 'Stop' : 'Start'}
         </Button>
-        <Button onClick={this.handleClearAllClick}>Clear</Button>
+        <Button 
+          variant="contained"
+          onClick={this.handleClearAllClick}
+          size={'small'}
+          className={classes.controlButton}
+          >Clear
+        </Button>
+        </div>
         <Grid 
         messages={this.state.messages}
         handleClearOneClick={this.handleClearOneClick}
@@ -92,4 +135,4 @@ class MessageList extends React.PureComponent {
   }
 }
 
-export default MessageList
+export default withStyles(styles, {withTheme: true})(MessageList)

@@ -1,7 +1,6 @@
 import React, { useState, useEffect }  from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Button from '@material-ui/core/Button';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -9,18 +8,38 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
+    padding: '0 10vw',
+  },
+  box: {
+    width: '100%',
+    padding: '0 2.5vw',
     '& > * + *': {
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(2),
     },
   },
+  error: {
+    color: '#000000',
+    backgroundColor:"#F56236",
+    width: '100%'
+  },
+  warning: {
+    color: '#000000',
+    backgroundColor:"#FCE788"
+  },
+  info: {
+    color: '#000000',
+    backgroundColor:"#88FCA3"
+  },
+  category: {
+    margin: '15px 0 0 0'
+  },
+  count:{
+    margin: '4px',
+    'font-size': '12px'
+  }
 }));
 
 export default function CustomizedSnackbars(props) {
@@ -40,15 +59,15 @@ export default function CustomizedSnackbars(props) {
       let warningMsgs = props.messages.filter(msg => msg.priority === 2).reverse()
       let infoMsgs = props.messages.filter(msg => msg.priority === 3).reverse()
       errorMsgs = errorMsgs.map((msg)=>{
-        return <SnackbarContent key={msg.id} style={{ backgroundColor:"#F56236"}} message={msg.message} action={action(msg.id)} />
+        return <SnackbarContent key={msg.id} className={classes.error} message={msg.message} action={action(msg.id)} />
     
       })
       warningMsgs = warningMsgs.map((msg)=>{
-        return <SnackbarContent key={msg.id} style={{ backgroundColor:"#FCE788"}} message={msg.message} action={action(msg.id)} />
+        return <SnackbarContent key={msg.id} className={classes.warning} message={msg.message} action={action(msg.id)} />
     
       })
       infoMsgs = infoMsgs.map((msg)=>{
-        return <SnackbarContent action={action(msg.id)} key={msg.id} style={{ backgroundColor:"#88FCA3"}} message={msg.message} />
+        return <SnackbarContent action={action(msg.id)} key={msg.id} className={classes.info} message={msg.message} />
       })
       setErrorMessages(errorMsgs)
       setWarningMessages(warningMsgs)
@@ -62,39 +81,39 @@ export default function CustomizedSnackbars(props) {
     <div className={classes.root}>
       <Grid container>
       <Box
-        className={classes.root}
+        className={classes.box}
         boxShadow={0}
         bgcolor="background.paper"
         m={1}
         p={1}
-        style={{ width: '30vw', height: '5rem' }}
+        style={{ width: '20vw', height: '3rem' }}
       >
-        <h4>Error Type 1</h4>
-        <p>Count {errorMessages.length}</p>
+        <h4 className={classes.category}>Error Type 1</h4>
+        <p className={classes.count}>Count {errorMessages.length}</p>
       {errorMessages}
       </Box>
       <Box
-        className={classes.root}
+        className={classes.box}
         boxShadow={0}
         bgcolor="background.paper"
         m={1}
         p={1}
-        style={{ width: '30vw', height: '5rem' }}
+        style={{ width: '20vw', height: '3rem' }}
       >
-        <h4>Warning Type 2</h4>
-        <p>Count {warningMessages.length}</p>
+        <h4 className={classes.category}>Warning Type 2</h4>
+        <p className={classes.count}>Count {warningMessages.length}</p>
       {warningMessages}
       </Box>
       <Box
-        className={classes.root}
+        className={classes.box}
         boxShadow={0}
         bgcolor="background.paper"
         m={1}
         p={1}
-        style={{ width: '30vw', height: '5rem' }}
+        style={{ width: '20vw', height: '3rem' }}
       >
-        <h4>Info Type 3</h4>
-        <p>Count {infoMessages.length}</p>
+        <h4 className={classes.category}>Info Type 3</h4>
+        <p className={classes.count}>Count {infoMessages.length}</p>
       {infoMessages}
       </Box>
       </Grid>
