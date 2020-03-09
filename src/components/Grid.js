@@ -87,6 +87,7 @@ export default function CustomizedSnackbars(props) {
         m={1}
         p={1}
         style={{ width: '20vw', height: '3rem' }}
+        data-testid={"Box"}
       >
         <h4 className={classes.category}>Error Type 1</h4>
         <p className={classes.count}>Count {errorMessages.length}</p>

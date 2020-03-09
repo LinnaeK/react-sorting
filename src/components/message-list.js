@@ -91,10 +91,6 @@ class MessageList extends React.PureComponent {
   }
 
   handleClearOneClick=(msgId)=>{  
-    this.state.notification && this.state.notification.props.value == msgId ? console.log('true') : console.log('false')
-      
-
-      // console.log(this.state.notification.props.value)
       this.setState({
         messages: this.state.messages.filter(msg => {if(msg.id!==msgId) return msg}),
         notification: this.state.notification && this.state.notification.props.value == msgId ? '' : this.state.notification
@@ -114,30 +110,30 @@ class MessageList extends React.PureComponent {
     return (
       <div className={classes.root}>
         <div className={classes.heading}>
-        <h3 className={classes.title}>Help.com Coding Challenge</h3>
-        <div className={classes.button}>{this.state.notification}</div>
+          <h3 className={classes.title}>Help.com Coding Challenge</h3>
+          <div className={classes.button}>{this.state.notification}</div>
         </div>
         <hr/>
         <div className={classes.controlButtons}>
-        <Button
-          variant="contained"
-          onClick={this.handleClick}
-          size={'small'}
-          className={classes.controlButton}
-          >
-          {isApiStarted ? 'Stop' : 'Start'}
-        </Button>
-        <Button 
-          variant="contained"
-          onClick={this.handleClearAllClick}
-          size={'small'}
-          className={classes.controlButton}
-          >Clear
-        </Button>
+          <Button
+            variant="contained"
+            onClick={this.handleClick}
+            size={'small'}
+            className={classes.controlButton}
+            >
+            {isApiStarted ? 'Stop' : 'Start'}
+          </Button>
+          <Button 
+            variant="contained"
+            onClick={this.handleClearAllClick}
+            size={'small'}
+            className={classes.controlButton}
+            >Clear
+          </Button>
         </div>
         <Grid 
-        messages={this.state.messages}
-        handleClearOneClick={this.handleClearOneClick}
+          messages={this.state.messages}
+          handleClearOneClick={this.handleClearOneClick}
         />
       </div>
     )
