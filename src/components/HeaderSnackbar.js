@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Button from '@material-ui/core/Button';
 
@@ -18,9 +18,10 @@ const useStyles = makeStyles(theme => ({
   })
 )
 
-export default function HeaderSnackbar({message, handleClearOneClick}) {
+export default function HeaderSnackbar(props) {
   const classes = useStyles();
-
+  const [message, setMessage] = useState(props.message)
+  
 return(
   <SnackbarContent 
     className={classes.headerSnackbar}
@@ -30,7 +31,7 @@ return(
     action={
       <Button 
         className={classes.headerSnackbarButton}
-        onClick={()=>{handleClearOneClick(message.id)}}
+        onClick={()=>{props.handleClearOneClick(message.id)}}
         >X
       </Button>
     }

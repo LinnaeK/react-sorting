@@ -19,7 +19,7 @@ const styles = theme => ({
     left: '0',
     right: '0',
     margin: 'auto',
-    'margin-top': '-17vh'
+    'margin-top': '-50px'
     
   },
   heading: {
@@ -66,11 +66,14 @@ class MessageList extends React.PureComponent {
       if(message.priority===1){
         this.setState({notification:
           <HeaderSnackbar 
-            message={message} 
-            handleClearOneClick={this.handleClearOneClick}
+          message={message} 
+          handleClearOneClick={this.handleClearOneClick}
           />
-            })
-        setTimeout(()=>{this.setState({notification:''})}, 2000)
+        })
+        
+        setTimeout(()=> {
+        {this.setState({notification:''})}
+      }, 2000)
       }
     })
   }
@@ -85,7 +88,7 @@ class MessageList extends React.PureComponent {
     this.forceUpdate()
   }
 
-  handleClearOneClick=(msgId)=>{   
+  handleClearOneClick=(msgId)=>{  
       this.setState({
         messages: this.state.messages.filter(msg => {if(msg.id!==msgId) return msg}),
         notification: this.state.notification.key ? this.state.notification.key === msgId ? '' : this.notification : ''
