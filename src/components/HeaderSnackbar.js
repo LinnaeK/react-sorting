@@ -27,6 +27,7 @@ return(
     className={classes.headerSnackbar}
     style={{ backgroundColor:"#F56236"}} 
     key={message.id} 
+    id={message.id}
     message={message.message} 
     action={
       <Button 

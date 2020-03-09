@@ -1,11 +1,13 @@
-import React, {setState} from 'react'
+import React, { setState } from 'react'
 import { withStyles } from "@material-ui/core/styles";
+
 import Grid from './Grid'
 import HeaderSnackbar from './HeaderSnackbar'
 import Button from '@material-ui/core/Button'
+
 import Api from '../api'
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     'font-family': "'Montserrat', sans-serif",
     'color': '#000000', 
@@ -66,14 +68,14 @@ class MessageList extends React.PureComponent {
       if(message.priority===1){
         this.setState({notification:
           <HeaderSnackbar 
-          message={message} 
-          handleClearOneClick={this.handleClearOneClick}
+            message={message} 
+            handleClearOneClick={this.handleClearOneClick}
+            value={message.id}
           />
-        })
-        
+        }) 
         setTimeout(()=> {
-        {this.setState({notification:''})}
-      }, 2000)
+          this.setState({notification:''})
+            }, 2000)
       }
     })
   }
@@ -89,9 +91,13 @@ class MessageList extends React.PureComponent {
   }
 
   handleClearOneClick=(msgId)=>{  
+    this.state.notification && this.state.notification.props.value == msgId ? console.log('true') : console.log('false')
+      
+
+      // console.log(this.state.notification.props.value)
       this.setState({
         messages: this.state.messages.filter(msg => {if(msg.id!==msgId) return msg}),
-        notification: this.state.notification.key ? this.state.notification.key === msgId ? '' : this.notification : ''
+        notification: this.state.notification && this.state.notification.props.value == msgId ? '' : this.state.notification
       })
   }
 
